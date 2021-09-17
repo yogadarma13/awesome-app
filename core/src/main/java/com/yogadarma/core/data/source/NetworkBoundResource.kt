@@ -19,16 +19,38 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     private val mCompositeDisposable = CompositeDisposable()
 
     init {
-        fetchFromNetwork()
+        @Suppress("LeakingThis")
+        val dbSource = loadFromDB()
+        val db = dbSource
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe { value ->
+                dbSource.unsubscribeOn(Schedulers.io())
+                if (shouldFetch(value)) {
+                    fetchFromNetwork()
+                } else {
+                    result.onNext(Resource.Success(value))
+                }
+            }
+        mCompositeDisposable.add(db)
     }
+
+    protected open fun onFetchFailed() {}
+
+    protected abstract fun loadFromDB(): Flowable<ResultType>
+
+    protected abstract fun shouldFetch(data: ResultType?): Boolean
 
     protected abstract fun createCall(): Flowable<ApiResponse<RequestType>>
 
-    protected abstract fun loadData(data: RequestType): ResultType
+    protected abstract fun saveCallResult(data: RequestType)
 
     private fun fetchFromNetwork() {
+
         val apiResponse = createCall()
 
+        result.onNext(Resource.Loading(null))
         val response = apiResponse
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -39,17 +61,19 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
             .subscribe { response ->
                 when (response) {
                     is ApiResponse.Success -> {
-//                        if (response.data != null) {
-                        result.onNext(
-                            Resource.Success(
-                                response.message.toString(),
-                                if (response.data != null) loadData(response.data) else response.data
-                            )
-                        )
-//                        }
+                        saveCallResult(response.data)
+                        val dbSource = loadFromDB()
+                        dbSource.subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .take(1)
+                            .subscribe {
+                                dbSource.unsubscribeOn(Schedulers.io())
+                                result.onNext(Resource.Success(it))
+                            }
                     }
                     is ApiResponse.Error -> {
-                        var message = "Terjadi kesalahan"
+                        onFetchFailed()
+                        var message = "Refresh page failed"
 
                         if (!response.message.isNullOrEmpty()) {
                             message = response.message
@@ -68,10 +92,18 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                             }
                         }
                         result.onNext(Resource.Error(message))
+
+                        val dbSource = loadFromDB()
+                        dbSource.subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .take(1)
+                            .subscribe {
+                                dbSource.unsubscribeOn(Schedulers.io())
+                                result.onNext(Resource.Success(it))
+                            }
                     }
                 }
             }
-
         mCompositeDisposable.add(response)
     }
 

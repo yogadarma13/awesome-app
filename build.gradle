@@ -16,6 +16,7 @@ buildscript {
         adapter_rxjava_version = "2.9.0"
         reactivestreams_version = "2.3.1"
         hilt_version = "2.38.1"
+        room_version = "2.3.0"
     }
     repositories {
         google()
