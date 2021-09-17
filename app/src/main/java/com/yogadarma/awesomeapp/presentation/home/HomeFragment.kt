@@ -1,13 +1,13 @@
 package com.yogadarma.awesomeapp.presentation.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.yogadarma.awesomeapp.databinding.FragmentHomeBinding
 import com.yogadarma.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +19,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding
 
     private val homeViewModel: HomeViewModel by viewModels()
+
+    private lateinit var photoAdapter: PhotoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +34,19 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        photoAdapter = PhotoAdapter()
+        with(binding?.rvPhoto) {
+            this?.layoutManager = LinearLayoutManager(context)
+            this?.setHasFixedSize(true)
+            this?.adapter = photoAdapter
+        }
         getCuratedPhoto()
     }
 
     private fun getCuratedPhoto() {
         homeViewModel.getCuratedPhoto().observe(viewLifecycleOwner, { response ->
             when (response) {
-                is Resource.Success -> Log.d("DATAAAAAA", response.data.toString())
+                is Resource.Success -> photoAdapter.setData(response.data)
                 is Resource.Error -> Toast.makeText(
                     requireContext(),
                     response.message,
