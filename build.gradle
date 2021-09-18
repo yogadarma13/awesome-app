@@ -19,6 +19,7 @@ buildscript {
         room_version = "2.3.0"
         glide_version = "4.12.0"
         idle_resource_version = '3.2.0'
+        circle_imageview_version = "3.1.0"
     }
     repositories {
         google()

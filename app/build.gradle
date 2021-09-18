@@ -49,5 +49,9 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    // CircleImage
+    implementation "de.hdodenhof:circleimageview:$circle_imageview_version"
+
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
 }
