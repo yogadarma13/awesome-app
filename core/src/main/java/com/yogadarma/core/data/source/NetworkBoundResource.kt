@@ -25,14 +25,14 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .take(1)
-            .subscribe { value ->
+            .subscribe ({ value ->
                 dbSource.unsubscribeOn(Schedulers.io())
                 if (shouldFetch(value)) {
                     fetchFromNetwork()
                 } else {
                     result.onNext(Resource.Success(value))
                 }
-            }
+            }, {})
         mCompositeDisposable.add(db)
     }
 
@@ -66,10 +66,10 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                         dbSource.subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .take(1)
-                            .subscribe {
+                            .subscribe ({
                                 dbSource.unsubscribeOn(Schedulers.io())
                                 result.onNext(Resource.Success(it))
-                            }
+                            },{})
                     }
                     is ApiResponse.Error -> {
                         onFetchFailed()
@@ -97,10 +97,10 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                         dbSource.subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .take(1)
-                            .subscribe {
+                            .subscribe ({
                                 dbSource.unsubscribeOn(Schedulers.io())
                                 result.onNext(Resource.Success(it))
-                            }
+                            },{})
                     }
                 }
             }
