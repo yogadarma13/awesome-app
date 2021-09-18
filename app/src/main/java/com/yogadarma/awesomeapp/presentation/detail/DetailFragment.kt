@@ -6,8 +6,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.yogadarma.awesomeapp.databinding.FragmentDetailBinding
 import com.yogadarma.awesomeapp.presentation.base.BaseFragment
+import com.yogadarma.awesomeapp.utils.gone
 import com.yogadarma.awesomeapp.utils.loadImage
 import com.yogadarma.awesomeapp.utils.showToast
+import com.yogadarma.awesomeapp.utils.visible
 import com.yogadarma.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,15 +31,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     private fun getPhotoDetail(photoId: Int) {
         detailViewModel.getPhotoDetail(photoId).observe(viewLifecycleOwner, { response ->
             when (response) {
-                is Resource.Loading -> {
-                }
+                is Resource.Loading -> binding.progressbar.visible()
                 is Resource.Success -> {
                     with(binding) {
+                        progressbar.gone()
                         imgPhotoDetail.loadImage(response.data?.photoUrl)
                         tvPhotographer.text = response.data?.photographer
                     }
                 }
-                is Resource.Error -> showToast(response.message)
+                is Resource.Error -> {
+                    binding.progressbar.gone()
+                    showToast(response.message)
+                }
             }
         })
     }
