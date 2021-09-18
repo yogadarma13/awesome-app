@@ -29,4 +29,17 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
         return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
+
+    fun getPhotoDetail(photoId: Int): Flowable<ApiResponse<PhotoItem?>> {
+        val resultData = PublishSubject.create<ApiResponse<PhotoItem?>>()
+
+        apiService.getPhotoDetail(photoId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).take(1).subscribe({ response ->
+                resultData.onNext(ApiResponse.Success(data = response))
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error))
+            })
+
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
+    }
 }

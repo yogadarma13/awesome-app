@@ -22,7 +22,8 @@ class AppRepository @Inject constructor(
 
     override fun getCuratedPhoto(): Flowable<Resource<List<Photo>>> =
         object : NetworkBoundResource<List<Photo>, List<PhotoItem?>?>() {
-            override fun loadFromDB(): Flowable<List<Photo>> = localDataSource.getAllPhoto().map { DataMapper.mapListPhotoEntitiesToPhotoDomain(it) }
+            override fun loadFromDB(): Flowable<List<Photo>> = localDataSource.getAllPhoto()
+                .map { DataMapper.mapListPhotoEntitiesToPhotoDomain(it) }
 
             override fun shouldFetch(data: List<Photo>?): Boolean = true
 
@@ -31,8 +32,26 @@ class AppRepository @Inject constructor(
 
             override fun saveCallResult(data: List<PhotoItem?>?) {
                 val photoList = DataMapper.mapListPhotoResponseToEntity(data)
-                localDataSource.insertAllPhoto(photoList)
-                    .subscribeOn(Schedulers.io())
+                localDataSource.insertAllPhoto(photoList).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
+            }
+
+        }.asFlowable()
+
+    override fun getPhotoDetail(photoId: Int): Flowable<Resource<Photo>> =
+        object : NetworkBoundResource<Photo, PhotoItem?>() {
+            override fun loadFromDB(): Flowable<Photo> = localDataSource.getPhotoDetail(photoId)
+                .map { DataMapper.mapPhotoEntityToDomain(it) }
+
+            override fun shouldFetch(data: Photo?): Boolean = true
+
+            override fun createCall(): Flowable<ApiResponse<PhotoItem?>> =
+                remoteDataSource.getPhotoDetail(photoId)
+
+            override fun saveCallResult(data: PhotoItem?) {
+                val photoEntity = DataMapper.mapPhotoResponseToEntity(data)
+                localDataSource.updatePhoto(photoEntity).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe()
             }

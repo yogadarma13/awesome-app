@@ -11,4 +11,8 @@ class LocalDataSource @Inject constructor(private val appDao: AppDao) {
     fun insertAllPhoto(photos: List<PhotoEntity>) = appDao.insertAllPhoto(photos)
 
     fun getAllPhoto(): Flowable<List<PhotoEntity>> = appDao.getAllPhoto()
+
+    fun updatePhoto(photo: PhotoEntity) = appDao.updatePhoto(photo)
+
+    fun getPhotoDetail(photoId: Int) = appDao.getPhotoDetail(photoId)
 }
