@@ -19,7 +19,7 @@
         android:layout_height="0dp"
         android:background="@drawable/background_gradient_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:0.6" />
+        app:layout_constraintDimensionRatio="1:0.5" />
 
     <TextView
         android:layout_width="match_parent"
@@ -42,6 +42,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:id="@+id/tv_photographer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
