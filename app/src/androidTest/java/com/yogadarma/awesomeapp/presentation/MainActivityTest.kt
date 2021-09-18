@@ -2,10 +2,15 @@ package com.yogadarma.awesomeapp.presentation
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.yogadarma.awesomeapp.R
 import com.yogadarma.core.utils.EspressoIdlingResource
@@ -31,8 +36,18 @@ class MainActivityTest {
 
     @Test
     fun loadCuratedPhoto() {
-        Espresso.onView(ViewMatchers.withId(R.id.rv_photo)).apply {
-            check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.rv_photo)).apply {
+            check(matches(isDisplayed()))
+            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10))
+        }
+    }
+
+    @Test
+    fun changeListViewToGridView() {
+        onView(withId(R.id.rv_photo)).check(matches(isDisplayed()))
+        onView(withId(R.id.type_item)).perform(click())
+        onView(withId(R.id.rv_photo)).apply {
+            check(matches(isDisplayed()))
             perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10))
         }
     }
