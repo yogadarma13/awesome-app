@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yogadarma.awesomeapp.R
@@ -42,6 +43,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onView() {
         photoAdapter = PhotoAdapter()
+        photoAdapter.onItemClick = { photoId ->
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                    photoId
+                )
+            )
+        }
 
         getCuratedPhoto()
     }

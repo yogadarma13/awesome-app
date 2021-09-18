@@ -13,6 +13,8 @@ class PhotoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var listData = ArrayList<Photo>()
     private var isList = true
 
+    var onItemClick: ((Int) -> Unit)? = null
+
     fun setData(newListData: List<Photo>?, isList: Boolean) {
         this.isList = isList
         if (newListData == null) return
@@ -56,6 +58,12 @@ class PhotoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 tvPhotographer.text = data.photographer
             }
         }
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(listData[adapterPosition].id)
+            }
+        }
     }
 
     inner class GridViewHolder(private val binding: ItemGridBinding) :
@@ -64,6 +72,12 @@ class PhotoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             with(binding) {
                 imgItem.loadImageRounded(data.photoUrl)
                 tvPhotographer.text = data.photographer
+            }
+        }
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(listData[adapterPosition].id)
             }
         }
     }
