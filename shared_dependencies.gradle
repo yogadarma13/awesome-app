@@ -17,4 +17,7 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    implementation "androidx.test.espresso:espresso-idling-resource:$idle_resource_version"
+
 }
