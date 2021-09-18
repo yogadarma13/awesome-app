@@ -1,9 +1,10 @@
 package com.yogadarma.awesomeapp.presentation.home
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yogadarma.awesomeapp.R
 import com.yogadarma.awesomeapp.databinding.FragmentHomeBinding
 import com.yogadarma.awesomeapp.presentation.base.BaseFragment
 import com.yogadarma.awesomeapp.utils.gone
@@ -21,6 +22,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        setHasOptionsMenu(true)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onView() {
         photoAdapter = PhotoAdapter()
@@ -46,5 +56,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.type_item -> {}
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
