@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.yogadarma.awesomeapp.presentation.detail.DetailFragment"
-        android:label="fragment_detail"
+        android:label="@string/photo_detail_text"
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="photoId"

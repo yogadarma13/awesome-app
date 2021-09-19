@@ -2,8 +2,13 @@ package com.yogadarma.awesomeapp.presentation.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.yogadarma.awesomeapp.R
 import com.yogadarma.awesomeapp.databinding.FragmentDetailBinding
 import com.yogadarma.awesomeapp.presentation.base.BaseFragment
 import com.yogadarma.awesomeapp.utils.gone
@@ -23,9 +28,23 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         get() = FragmentDetailBinding::inflate
 
     override fun onView() {
+        setToolbar()
+
         val photoId = args.photoId
 
         getPhotoDetail(photoId)
+    }
+
+    private fun setToolbar() {
+        binding.appbar.bringToFront()
+
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        binding.toolbar.navigationIcon =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_back_button)
     }
 
     private fun getPhotoDetail(photoId: Int) {
