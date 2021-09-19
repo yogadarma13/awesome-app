@@ -47,15 +47,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         setToolbar()
-        photoAdapter = PhotoAdapter()
-        photoAdapter.onItemClick = { photoId ->
-            findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                    photoId
-                )
-            )
-        }
-
         setListView()
         setCoverImage()
         getCuratedPhoto()
@@ -88,6 +79,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setListView() {
+        photoAdapter = PhotoAdapter()
+        photoAdapter.onItemClick = { photoId ->
+            moveToPhotoDetail(photoId)
+        }
+
         homeViewModel.isList().observe(viewLifecycleOwner, { isList ->
             this.isList = isList
 
@@ -120,8 +116,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setCoverImage() {
         coverImageAdapter = CoverImageAdapter()
-        coverImageAdapter.onItemClick = {
-
+        coverImageAdapter.onItemClick = { photoId ->
+            moveToPhotoDetail(photoId)
         }
 
         with(binding.viewPager) {
@@ -176,6 +172,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         })
     }
 
+    private fun moveToPhotoDetail(photoId: Int) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                photoId
+            )
+        )
+    }
+
     override fun onPause() {
         super.onPause()
         sliderHandler.removeCallbacks(sliderRunnable)
@@ -183,7 +187,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-
         sliderHandler.postDelayed(sliderRunnable, 3000)
     }
 }
