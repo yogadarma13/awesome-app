@@ -15,6 +15,12 @@ fun ImageView.loadImageRounded(url: String) {
         .into(this)
 }
 
+fun ImageView.loadImage(url: String) {
+    Glide.with(this.context)
+        .load(url)
+        .into(this)
+}
+
 fun Fragment.showToast(message: String?) {
     Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
 }
