@@ -1,9 +1,12 @@
 package com.yogadarma.awesomeapp.presentation.home
 
-import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yogadarma.awesomeapp.R
@@ -25,31 +28,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var photoAdapter: PhotoAdapter
     private var listData: List<Photo>? = listOf()
     private var isList: Boolean = true
-    private var menu: Menu? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onView() {
+        setToolbar()
         photoAdapter = PhotoAdapter()
 
+        setListView()
         getCuratedPhoto()
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.collapsingToolbarLayout.apply {
+            setCollapsedTitleTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            setExpandedTitleColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    android.R.color.transparent
+                )
+            )
+            setupWithNavController(binding.toolbar, navController, appBarConfiguration)
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.type_item -> {
+                    homeViewModel.setListView(!isList)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setListView() {
         homeViewModel.isList().observe(viewLifecycleOwner, { isList ->
             this.isList = isList
 
+            val menu = binding.toolbar.menu
             val menuItem = menu?.findItem(R.id.type_item)
             menuItem?.icon = if (isList) ContextCompat.getDrawable(
                 requireContext(),
@@ -91,19 +112,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_menu, menu)
-        this.menu = menu
-        setListView()
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.type_item -> homeViewModel.setListView(!isList)
-        }
-        return super.onOptionsItemSelected(item)
     }
 }
