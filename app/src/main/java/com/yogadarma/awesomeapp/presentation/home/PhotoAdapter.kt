@@ -54,7 +54,7 @@ class PhotoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Photo) {
             with(binding) {
-                imgItem.loadImageRounded(data.photoUrl)
+                imgItem.loadImageRounded(data.portraitPhotoUrl)
                 tvPhotographer.text = data.photographer
             }
         }
@@ -70,7 +70,7 @@ class PhotoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Photo) {
             with(binding) {
-                imgItem.loadImageRounded(data.photoUrl)
+                imgItem.loadImageRounded(data.portraitPhotoUrl)
                 tvPhotographer.text = data.photographer
             }
         }

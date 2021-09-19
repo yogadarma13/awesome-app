@@ -22,9 +22,14 @@ object DataMapper {
     }
 
     fun mapPhotoResponseToEntity(input: PhotoItem?): PhotoEntity =
-        PhotoEntity(input?.id ?: 0, input?.src?.portrait ?: "", input?.photographer ?: "")
+        PhotoEntity(
+            input?.id ?: 0,
+            input?.src?.portrait ?: "",
+            input?.src?.landscape ?: "",
+            input?.photographer ?: ""
+        )
 
     fun mapPhotoEntityToDomain(input: PhotoEntity): Photo =
-        Photo(input.id, input.photoUrl, input.photographer)
+        Photo(input.id, input.portraitPhotoUrl, input.landscapePhotoUrl, input.photographer)
 
 }

@@ -4,4 +4,5 @@
     <string name="photo_by_text">Photo by</string>
     <string name="view_type_text">View Type</string>
     <string name="image_detail_text">Image Detail</string>
+    <string name="cover_image_text">Cover Image</string>
 </resources>

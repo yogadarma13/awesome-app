@@ -3,7 +3,7 @@ package com.yogadarma.awesomeapp.presentation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -47,6 +47,17 @@ class MainActivityTest {
             check(matches(isDisplayed()))
             perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10))
         }
+    }
+
+    @Test
+    fun swipeCoverImage() {
+        onView(withId(R.id.view_pager)).check(matches(isDisplayed()))
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.view_pager)).perform(swipeRight())
     }
 
     @Test

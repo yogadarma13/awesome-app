@@ -35,7 +35,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
                 is Resource.Success -> {
                     with(binding) {
                         progressbar.gone()
-                        imgPhotoDetail.loadImage(response.data?.photoUrl)
+                        imgPhotoDetail.loadImage(response.data?.portraitPhotoUrl)
                         tvPhotographer.text = response.data?.photographer
                     }
                 }
