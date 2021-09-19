@@ -7,7 +7,7 @@ import com.yogadarma.core.domain.model.Photo
 object DataMapper {
     fun mapListPhotoEntitiesToPhotoDomain(input: List<PhotoEntity>): List<Photo> {
         val list = input.map {
-            Photo(it.id, it.photoUrl, it.photographer)
+            Photo(it.id, it.portraitPhotoUrl, it.landscapePhotoUrl, it.photographer)
         }
 
         return list
@@ -15,7 +15,12 @@ object DataMapper {
 
     fun mapListPhotoResponseToEntity(input: List<PhotoItem?>?): List<PhotoEntity> {
         val list = input?.map {
-            PhotoEntity(it?.id ?: 0, it?.src?.medium ?: "", it?.photographer ?: "")
+            PhotoEntity(
+                it?.id ?: 0,
+                it?.src?.portrait ?: "",
+                it?.src?.landscape ?: "",
+                it?.photographer ?: ""
+            )
         }
 
         return list ?: listOf()

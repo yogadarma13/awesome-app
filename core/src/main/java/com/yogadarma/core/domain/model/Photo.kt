@@ -2,6 +2,7 @@ package com.yogadarma.core.domain.model
 
 data class Photo(
     val id: Int,
-    val photoUrl: String,
+    val portraitPhotoUrl: String,
+    val landscapePhotoUrl: String,
     val photographer: String
 )

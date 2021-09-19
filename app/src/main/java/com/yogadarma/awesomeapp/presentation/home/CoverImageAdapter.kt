@@ -34,7 +34,7 @@ class CoverImageAdapter : RecyclerView.Adapter<CoverImageAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listItem[position])
 
-        if (position == listItem.size - 2) {
+        if (position == listItem.size - 1) {
             viewPager.post(sliderRunnable)
         }
     }
@@ -44,7 +44,7 @@ class CoverImageAdapter : RecyclerView.Adapter<CoverImageAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ItemCoverImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Photo) {
-            binding.imgCover.loadImage(data.photoUrl)
+            binding.imgCover.loadImage(data.landscapePhotoUrl)
         }
 
         init {

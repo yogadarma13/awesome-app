@@ -12,8 +12,11 @@ data class PhotoEntity(
     @ColumnInfo(name = "id")
     val id: Int,
 
-    @ColumnInfo(name = "photoUrl")
-    val photoUrl: String,
+    @ColumnInfo(name = "portraitPhotoUrl")
+    val portraitPhotoUrl: String,
+
+    @ColumnInfo(name = "landscapePhotoUrl")
+    val landscapePhotoUrl: String,
 
     @ColumnInfo(name = "photographer")
     val photographer: String
