@@ -147,16 +147,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     response.data?.let { list ->
                         listData = list
 
-                        photoAdapter.setData(list, isList)
                         if (list.size > 6)
                             coverImageAdapter.setData(
                                 response.data?.subList(0, 6),
                                 binding.viewPager
                             )
-                        else coverImageAdapter.setData(
+                        else if (list.isNotEmpty()) coverImageAdapter.setData(
                             response.data?.subList(0, list.lastIndex),
                             binding.viewPager
                         )
+                        photoAdapter.setData(list, isList)
                     }
                 }
                 is Resource.Error -> {
