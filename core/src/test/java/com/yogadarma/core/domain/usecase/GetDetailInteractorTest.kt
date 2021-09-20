@@ -17,19 +17,11 @@ import org.mockito.junit.MockitoRule
 
 class GetDetailInteractorTest {
 
-    private val dummyPhoto = listOf(
-        Photo(
-            1,
-            "",
-            "",
-            "Yoga"
-        ),
-        Photo(
-            2,
-            "",
-            "",
-            "Darma"
-        )
+    private val dummyPhoto = Photo(
+        1,
+        "",
+        "",
+        "Yoga"
     )
 
     @Rule
@@ -52,14 +44,14 @@ class GetDetailInteractorTest {
 
     @Test
     fun detailInteractor_GetPhotoDetail_ReturnPass() {
-        `when`(appRepository.getPhotoDetail(dummyPhoto[0].id)).thenReturn(
+        `when`(appRepository.getPhotoDetail(dummyPhoto.id)).thenReturn(
             Flowable.just(
                 Resource.Success(
-                    dummyPhoto[0]
+                    dummyPhoto
                 )
             )
         )
-        val result = detailInteractor.getPhotoDetail(dummyPhoto[0].id)
+        val result = detailInteractor.getPhotoDetail(dummyPhoto.id)
 
         val testSubscriber = TestSubscriber<Resource<Photo>>()
         result.subscribe(testSubscriber)
@@ -67,7 +59,7 @@ class GetDetailInteractorTest {
         testSubscriber.assertNoErrors()
 
         val actualResult = testSubscriber.values()[0]
-        assertEquals(dummyPhoto[0].id, actualResult.data?.id)
-        assertEquals(dummyPhoto[0].photographer, actualResult.data?.photographer)
+        assertEquals(dummyPhoto.id, actualResult.data?.id)
+        assertEquals(dummyPhoto.photographer, actualResult.data?.photographer)
     }
 }
