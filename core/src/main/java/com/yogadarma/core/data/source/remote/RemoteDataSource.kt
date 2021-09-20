@@ -12,6 +12,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/* Tolong comment kode Idling Resource jika ingin menjalankan unit test,
+dan uncomment kode Idling Resoirce jika ingin menjalankan instrumentation test */
 @Singleton
 class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 

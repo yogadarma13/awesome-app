@@ -16,6 +16,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+/* Jika ingin menjalankan test berikut tolong uncomment terlebih dahulu kode Idling Resource
+    pada class RemoteDataSource */
 class MainActivityTest {
 
     @get:Rule
@@ -31,6 +33,8 @@ class MainActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
     }
 
+    /* Jika ingin menjalankan test berikut tolong uncomment terlebih dahulu kode Idling Resource
+    pada class RemoteDataSource */
     @Test
     fun loadCuratedPhoto() {
         onView(withId(R.id.rv_photo)).apply {
@@ -39,6 +43,8 @@ class MainActivityTest {
         }
     }
 
+    /* Jika ingin menjalankan test berikut tolong uncomment terlebih dahulu kode Idling Resource
+    pada class RemoteDataSource */
     @Test
     fun changeListViewToGridView() {
         onView(withId(R.id.rv_photo)).check(matches(isDisplayed()))
@@ -49,6 +55,8 @@ class MainActivityTest {
         }
     }
 
+    /* Jika ingin menjalankan test berikut tolong uncomment terlebih dahulu kode Idling Resource
+    pada class RemoteDataSource */
     @Test
     fun swipeCoverImage() {
         onView(withId(R.id.view_pager)).check(matches(isDisplayed()))
@@ -60,6 +68,8 @@ class MainActivityTest {
         onView(withId(R.id.view_pager)).perform(swipeRight())
     }
 
+    /* Jika ingin menjalankan test berikut tolong uncomment terlebih dahulu kode Idling Resource
+    pada class RemoteDataSource */
     @Test
     fun loadPhotoDetail() {
         onView(withId(R.id.rv_photo)).check(matches(isDisplayed()))
