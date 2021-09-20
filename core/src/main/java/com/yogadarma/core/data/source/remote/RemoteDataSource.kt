@@ -16,16 +16,18 @@ import javax.inject.Singleton
 class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     fun getCuratedPhoto(): Flowable<ApiResponse<List<PhotoItem?>?>> {
-        EspressoIdlingResource.increment()
+//        EspressoIdlingResource.increment()
         val resultData = PublishSubject.create<ApiResponse<List<PhotoItem?>?>>()
 
         apiService.getCuratedPhoto().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).take(1).subscribe({ response ->
                 resultData.onNext(ApiResponse.Success(data = response.photos))
-                EspressoIdlingResource.decrement()
+                resultData.onComplete()
+//                EspressoIdlingResource.decrement()
             }, { error ->
                 resultData.onNext(ApiResponse.Error(error))
-                EspressoIdlingResource.decrement()
+                resultData.onComplete()
+//                EspressoIdlingResource.decrement()
             })
 
         return resultData.toFlowable(BackpressureStrategy.BUFFER)
@@ -38,9 +40,11 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         apiService.getPhotoDetail(photoId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).take(1).subscribe({ response ->
                 resultData.onNext(ApiResponse.Success(data = response))
+                resultData.onComplete()
                 EspressoIdlingResource.decrement()
             }, { error ->
                 resultData.onNext(ApiResponse.Error(error))
+                resultData.onComplete()
                 EspressoIdlingResource.decrement()
             })
 
