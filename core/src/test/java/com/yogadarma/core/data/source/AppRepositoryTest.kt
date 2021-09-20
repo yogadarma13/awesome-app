@@ -58,4 +58,17 @@ class AppRepositoryTest {
 
         verify(localDataSource).getAllPhoto()
     }
+
+    @Test
+    fun appRepository_GetPhotoDetail_ReturnPass() {
+        `when`(localDataSource.getPhotoDetail(dummyPhotoEntity[0].id)).thenReturn(
+            Flowable.just(
+                dummyPhotoEntity[0]
+            )
+        )
+
+        appRepository.getPhotoDetail(dummyPhotoEntity[0].id)
+
+        verify(localDataSource).getPhotoDetail(dummyPhotoEntity[0].id)
+    }
 }
