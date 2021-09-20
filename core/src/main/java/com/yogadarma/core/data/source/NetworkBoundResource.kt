@@ -33,7 +33,6 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                     result.onNext(Resource.Success(value))
                     result.onComplete()
                 }
-//                result.onComplete()
             }, {})
         mCompositeDisposable.add(db)
     }

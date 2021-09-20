@@ -65,7 +65,7 @@ class RemoteDataSourceTest {
     /* Jika ingin menjalankan test berikut tolong comment terlebih dahulu kode Idling Resource
     pada class RemoteDataSource */
     @Test
-    fun getCuratedPhoto() {
+    fun remoteDataSource_GetCuratedPhoto_ReturnPass() {
         `when`(apiService.getCuratedPhoto()).thenReturn(Flowable.just(dummyCuratedResponse))
         val result = remoteDataSource.getCuratedPhoto()
 
@@ -78,7 +78,7 @@ class RemoteDataSourceTest {
     /* Jika ingin menjalankan test berikut tolong comment terlebih dahulu kode Idling Resource
     pada class RemoteDataSource */
     @Test
-    fun getPhotoDetail() {
+    fun remoteDataSource_GetPhotoDetail_ReturnPass() {
         `when`(apiService.getPhotoDetail(dummyPhotoItem.id!!)).thenReturn(Flowable.just(dummyPhotoItem))
         val result = remoteDataSource.getPhotoDetail(dummyPhotoItem.id!!)
 
