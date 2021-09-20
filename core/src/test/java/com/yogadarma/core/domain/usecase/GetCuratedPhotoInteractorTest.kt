@@ -11,11 +11,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
-class GetDetailInteractorTest {
+class GetCuratedPhotoInteractorTest {
 
     private val dummyPhoto = listOf(
         Photo(
@@ -43,31 +43,33 @@ class GetDetailInteractorTest {
     @Mock
     private lateinit var appRepository: AppRepository
 
-    private lateinit var detailInteractor: GetDetailInteractor
+    private lateinit var curatedPhotoInteractor: GetCuratedPhotoInteractor
 
     @Before
     fun setUp() {
-        detailInteractor = GetDetailInteractor((appRepository))
+        curatedPhotoInteractor = GetCuratedPhotoInteractor((appRepository))
     }
 
     @Test
-    fun detailInteractor_GetPhotoDetail_ReturnPass() {
-        `when`(appRepository.getPhotoDetail(dummyPhoto[0].id)).thenReturn(
+    fun curatedInteractor_GetCuratedPhoto_ReturnPass() {
+        Mockito.`when`(appRepository.getCuratedPhoto()).thenReturn(
             Flowable.just(
                 Resource.Success(
-                    dummyPhoto[0]
+                    dummyPhoto
                 )
             )
         )
-        val result = detailInteractor.getPhotoDetail(dummyPhoto[0].id)
+        val result = curatedPhotoInteractor.getCuratedPhoto()
 
-        val testSubscriber = TestSubscriber<Resource<Photo>>()
+        val testSubscriber = TestSubscriber<Resource<List<Photo>>>()
         result.subscribe(testSubscriber)
         testSubscriber.assertComplete()
         testSubscriber.assertNoErrors()
 
         val actualResult = testSubscriber.values()[0]
-        assertEquals(dummyPhoto[0].id, actualResult.data?.id)
-        assertEquals(dummyPhoto[0].photographer, actualResult.data?.photographer)
+        assertEquals(dummyPhoto, actualResult.data)
+        assertEquals(dummyPhoto.size, actualResult.data?.size)
+        assertEquals(dummyPhoto[0].id, actualResult.data?.get(0)?.id)
+        assertEquals(dummyPhoto[0].photographer, actualResult.data?.get(0)?.photographer)
     }
 }
