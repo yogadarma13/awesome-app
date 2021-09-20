@@ -34,18 +34,18 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     }
 
     fun getPhotoDetail(photoId: Int): Flowable<ApiResponse<PhotoItem?>> {
-        EspressoIdlingResource.increment()
+//        EspressoIdlingResource.increment()
         val resultData = PublishSubject.create<ApiResponse<PhotoItem?>>()
 
         apiService.getPhotoDetail(photoId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).take(1).subscribe({ response ->
                 resultData.onNext(ApiResponse.Success(data = response))
                 resultData.onComplete()
-                EspressoIdlingResource.decrement()
+//                EspressoIdlingResource.decrement()
             }, { error ->
                 resultData.onNext(ApiResponse.Error(error))
                 resultData.onComplete()
-                EspressoIdlingResource.decrement()
+//                EspressoIdlingResource.decrement()
             })
 
         return resultData.toFlowable(BackpressureStrategy.BUFFER)
